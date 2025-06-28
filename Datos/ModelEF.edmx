@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ModelEF.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Coordinador">
+          <Key>
+            <PropertyRef Name="CoordinadorId" />
+          </Key>
+          <Property Name="CoordinadorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodigoCoordinador" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NombreCompleto" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="Eliminado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sala">
+          <Key>
+            <PropertyRef Name="SalaId" />
+          </Key>
+          <Property Name="SalaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Capacidad" Type="int" Nullable="false" />
+          <Property Name="Ubicacion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="Eliminado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SolicitudEvento">
+          <Key>
+            <PropertyRef Name="SolicitudEventoId" />
+          </Key>
+          <Property Name="SolicitudEventoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipoEvento" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaHoraEvento" Type="datetime" Nullable="false" />
+          <Property Name="Confirmado" Type="bit" Nullable="false" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="Eliminado" Type="bit" Nullable="false" />
+          <Property Name="CoordinadorId" Type="int" Nullable="false" />
+          <Property Name="SalaId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Solicitud_Coordinador">
+          <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="1" />
+          <End Role="SolicitudEvento" Type="Self.SolicitudEvento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Coordinador">
+              <PropertyRef Name="CoordinadorId" />
+            </Principal>
+            <Dependent Role="SolicitudEvento">
+              <PropertyRef Name="CoordinadorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Sala">
+          <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
+          <End Role="SolicitudEvento" Type="Self.SolicitudEvento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sala">
+              <PropertyRef Name="SalaId" />
+            </Principal>
+            <Dependent Role="SolicitudEvento">
+              <PropertyRef Name="SalaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelEFStoreContainer">
+          <EntitySet Name="Coordinador" EntityType="Self.Coordinador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sala" EntityType="Self.Sala" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SolicitudEvento" EntityType="Self.SolicitudEvento" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Solicitud_Coordinador" Association="Self.FK_Solicitud_Coordinador">
+            <End Role="Coordinador" EntitySet="Coordinador" />
+            <End Role="SolicitudEvento" EntitySet="SolicitudEvento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Sala" Association="Self.FK_Solicitud_Sala">
+            <End Role="Sala" EntitySet="Sala" />
+            <End Role="SolicitudEvento" EntitySet="SolicitudEvento" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ModelEF" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Coordinador">
+          <Key>
+            <PropertyRef Name="CoordinadorId" />
+          </Key>
+          <Property Name="CoordinadorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodigoCoordinador" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NombreCompleto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Eliminado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SolicitudEvento" Relationship="Self.FK_Solicitud_Coordinador" FromRole="Coordinador" ToRole="SolicitudEvento" />
+        </EntityType>
+        <EntityType Name="Sala">
+          <Key>
+            <PropertyRef Name="SalaId" />
+          </Key>
+          <Property Name="SalaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Capacidad" Type="Int32" Nullable="false" />
+          <Property Name="Ubicacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Eliminado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SolicitudEvento" Relationship="Self.FK_Solicitud_Sala" FromRole="Sala" ToRole="SolicitudEvento" />
+        </EntityType>
+        <EntityType Name="SolicitudEvento">
+          <Key>
+            <PropertyRef Name="SolicitudEventoId" />
+          </Key>
+          <Property Name="SolicitudEventoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoEvento" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaHoraEvento" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Confirmado" Type="Boolean" Nullable="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Eliminado" Type="Boolean" Nullable="false" />
+          <Property Name="CoordinadorId" Type="Int32" Nullable="false" />
+          <Property Name="SalaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Coordinador" Relationship="Self.FK_Solicitud_Coordinador" FromRole="SolicitudEvento" ToRole="Coordinador" />
+          <NavigationProperty Name="Sala" Relationship="Self.FK_Solicitud_Sala" FromRole="SolicitudEvento" ToRole="Sala" />
+        </EntityType>
+        <Association Name="FK_Solicitud_Coordinador">
+          <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="1" />
+          <End Role="SolicitudEvento" Type="Self.SolicitudEvento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Coordinador">
+              <PropertyRef Name="CoordinadorId" />
+            </Principal>
+            <Dependent Role="SolicitudEvento">
+              <PropertyRef Name="CoordinadorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Sala">
+          <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
+          <End Role="SolicitudEvento" Type="Self.SolicitudEvento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sala">
+              <PropertyRef Name="SalaId" />
+            </Principal>
+            <Dependent Role="SolicitudEvento">
+              <PropertyRef Name="SalaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BDEFEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Coordinador" EntityType="Self.Coordinador" />
+          <EntitySet Name="Sala" EntityType="Self.Sala" />
+          <EntitySet Name="SolicitudEvento" EntityType="Self.SolicitudEvento" />
+          <AssociationSet Name="FK_Solicitud_Coordinador" Association="Self.FK_Solicitud_Coordinador">
+            <End Role="Coordinador" EntitySet="Coordinador" />
+            <End Role="SolicitudEvento" EntitySet="SolicitudEvento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Sala" Association="Self.FK_Solicitud_Sala">
+            <End Role="Sala" EntitySet="Sala" />
+            <End Role="SolicitudEvento" EntitySet="SolicitudEvento" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelEFStoreContainer" CdmEntityContainer="BDEFEntities">
+          <EntitySetMapping Name="Coordinador">
+            <EntityTypeMapping TypeName="ModelEF.Coordinador">
+              <MappingFragment StoreEntitySet="Coordinador">
+                <ScalarProperty Name="CoordinadorId" ColumnName="CoordinadorId" />
+                <ScalarProperty Name="CodigoCoordinador" ColumnName="CodigoCoordinador" />
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="Eliminado" ColumnName="Eliminado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sala">
+            <EntityTypeMapping TypeName="ModelEF.Sala">
+              <MappingFragment StoreEntitySet="Sala">
+                <ScalarProperty Name="SalaId" ColumnName="SalaId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Capacidad" ColumnName="Capacidad" />
+                <ScalarProperty Name="Ubicacion" ColumnName="Ubicacion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="Eliminado" ColumnName="Eliminado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SolicitudEvento">
+            <EntityTypeMapping TypeName="ModelEF.SolicitudEvento">
+              <MappingFragment StoreEntitySet="SolicitudEvento">
+                <ScalarProperty Name="SolicitudEventoId" ColumnName="SolicitudEventoId" />
+                <ScalarProperty Name="TipoEvento" ColumnName="TipoEvento" />
+                <ScalarProperty Name="FechaHoraEvento" ColumnName="FechaHoraEvento" />
+                <ScalarProperty Name="Confirmado" ColumnName="Confirmado" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="Eliminado" ColumnName="Eliminado" />
+                <ScalarProperty Name="CoordinadorId" ColumnName="CoordinadorId" />
+                <ScalarProperty Name="SalaId" ColumnName="SalaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
